@@ -6,7 +6,8 @@ RUN pip3 install docker-py \
     && pip3 install Jinja2 \
     && pip3 install plumbum \
     && pip3 install python-etcd \
-    && pip3 install requests
+    && pip3 install requests \
+	&& pip3 install psutil
     
 RUN awk '{print "#"$0}' /etc/monitrc >> /etc/monitrc.tmp \
     && mv /etc/monitrc.tmp /etc/monitrc \

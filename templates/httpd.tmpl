@@ -1,0 +1,4 @@
+set httpd port {{ port }}
+    allow {{ net }}
+    allow admin:{{ admin_pass }}
+    allow user:{{ user_pass }} read-only

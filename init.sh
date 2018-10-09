@@ -9,5 +9,5 @@ do
     fi
 done
 
-python3 /app/init.py
+python3 /app/init.py --templates /app/templates
 monit -c /etc/monitrc -I -v

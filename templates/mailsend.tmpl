@@ -1,0 +1,12 @@
+set mailserver {{ server }}
+    PORT {{ port }}
+    {{ auth }}
+    
+{{ mail }}
+ set mail-format {
+    from: Monit Support <monit@{{ name }}>
+    subject: $SERVICE $EVENT at $DATE
+    message: Monit $ACTION $SERVICE at $DATE on $HOST: $DESCRIPTION.
+            Yours sincerely,
+            monit
+    }

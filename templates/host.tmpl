@@ -1,0 +1,4 @@
+check system {{ name }}
+    if cpu usage (user) > {{ cpu }} for {{ cycles }} cycles then alert
+    if loadavg (15min) > {{ load }}  then alert
+    if memory usage > {{ ram }} for {{ cycles }} cycles then alert

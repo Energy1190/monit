@@ -1,0 +1,4 @@
+{% for fs in fses %}
+check filesystem {{ fs }} with path {{ fses[fs] }}
+   if space usage > {{ hdd }} for {{ times }} times within {{ cycles }} cycles then alert
+{% endfor %} 

@@ -1,0 +1,3 @@
+check program sensors with path /usr/bin/sensors
+    with timeout 500 seconds
+    if status != 0 for {{ times }} times within {{ cycles }} cycles then alert
