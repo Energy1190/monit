@@ -132,6 +132,7 @@ class Env():
                     'PROGRAMS': {'default': None, 'requered': False, 'value': None},
                     'SEND_DATA': {'default': None, 'requered': False, 'value': None},
                     'HOSTNAME': {'default': None, 'requered': False, 'value': None},
+                    'REPEAT': {'default': 120, 'requered': False, 'value': None},
                     'ATTEMPTS': {'default': 5, 'requered': False, 'value': None},
                     'FAILURES': {'default': 3, 'requered': False, 'value': None},
                     'MAX_CPU': {'default': '95%', 'requered': False, 'value': None},
