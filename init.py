@@ -77,7 +77,7 @@ class TemplateDepend():
                                              'cycles': (self.env.get, 'ATTEMPTS')},
                                    'callback': (self._callback, 'fs')},
                        'default':  {'envs':  ['REPEAT'],
-                                    'parms': {'daemon': (self._build_fses, 'REPEAT')},
+                                    'parms': {'daemon': (self.env.get, 'REPEAT')},
                                     'callback': (self._callback, 'default')}}
 
     def _build_fses(self, args1):
