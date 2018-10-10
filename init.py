@@ -34,6 +34,7 @@ msg(__name__,'init:import','Begin.', logging.info, time_start=time_start)
 
 try:
     import argparse
+    import importlib
     from shutil import copyfile
     from jinja2 import Environment, FileSystemLoader
 except:
@@ -143,11 +144,20 @@ class Env():
                     'ALLOW_NETWORK': {'default': "0.0.0.0/0", 'requered': False, 'value': None},
                     'ADMIN_PASS': {'default': self._rpg('admin'), 'requered': False, 'value': None},
                     'USER_PASS': {'default': self._rpg('user'), 'requered': False, 'value': None},
-                    'FILESYSTEMS': {'default': 'auto', 'requered': False, 'value': None}}
+                    'FILESYSTEMS': {'default': 'auto', 'requered': False, 'value': None},
+                    'ENV_FILE': {'default': './.env', 'requered': False, 'value': None}}
 
     prog_pattern = 'ADD_PROG_'
     conf_pattern = 'ADD_CONF_'
     def self_check(self):
+        self._init()
+
+        self._rff(self.get('ENV_FILE'))
+        self._init()
+
+        self._add()
+
+    def _init(self):
         for env in self.envs:
             if os.environ.get(env):
                 self.envs[env]['value'] = os.environ.get(env)
@@ -158,20 +168,36 @@ class Env():
 
         for env in self.envs:
             if not self.envs[env]['value'] and self.envs[env]['requered']:
-                msg(__name__,'env:validate', 'Fail. {}.'.format(env), logging.error, time_start=time_start)
+                msg(__name__, 'env:validate', 'Fail. {}.'.format(env), logging.error, time_start=time_start)
                 sys.exit(1)
 
+    def _add(self):
         for env in os.environ:
-            if self.prog_pattern in env: self.envs['PROGRAMS'] += ';{}'.format(os.environ[env])
-            if self.conf_pattern in env: self.envs['GENERATE'] += ';{}'.format(os.environ[env])
+            if self.prog_pattern in env: self.add_item('PROGRAMS',os.environ[env])
+            if self.conf_pattern in env: self.add_item('GENERATE',os.environ[env])
+
+    def add_item(self, item, obj):
+        self.envs[item] += ';{}'.format(obj)
 
     def _rpg(self, name):
+        # Random password generate
         password = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(20))
         file = open('.{}_pass'.format(name), 'w')
         file.write(password)
         file.close()
 
         return password
+
+    def _rff(self, path):
+        # Read from file
+        if os.path.exists(path):
+            with open(path) as read_env:
+                for raw_env in read_env:
+                    try:
+                        name, data = raw_env.split('=')
+                        if name in self.envs: self.envs[name]['value'] = data.replace('\n','').replace('\r','')
+                    except:
+                        pass
 
     def get(self,key):
         return self.envs[key]['value']
@@ -232,6 +258,33 @@ class Generator():
 
         msg(__name__, 'generator:generate_program:{}'.format(path), 'Success.', logging.info, time_start=time_start)
 
+def get_includes(path='./includes', templates=None, depend=None, envs=None):
+    if not os.path.exists(path): return None
+    if not os.path.isdir(path): return None
+    if not depend: return None
+    if not envs: return None
+
+    sys.path.append(path)
+    for item in os.listdir(path):
+        sub_path = os.path.join(path,item)
+        if os.path.isfile(sub_path) and sub_path.split('.')[-1] == 'py':
+            try:
+                if '_include' in item:
+                    lib = importlib.import_module(item)
+                    config = lib.get('config')
+                    if config:
+                        [envs.add_item('GENERATE', sub_item) for sub_item in config]
+
+                    program = lib.get('program')
+                    if program:
+                        [envs.add_item('PROGRAMS', sub_item) for sub_item in program]
+
+                    lib.build_depend(envs, depend)
+                    lib.callback(templates)
+                    msg(__name__, 'includes:import', 'Add. {}'.format(item), logging.info, time_start=time_start)
+            except:
+                msg(__name__, 'includes:import', 'Fail. {}'.format(item), logging.error, time_start=time_start)
+
 def generate_params(env_val, depend=None):
     if not env_val: return {}
 
@@ -247,7 +300,7 @@ def generate_params(env_val, depend=None):
 
 msg(__name__, 'init:load', 'Success.', logging.info, time_start=time_start)
 
-def main(path_config='/etc/monit.d/', path_template='/templates/', path_programs='/programs'):
+def main(path_config='/etc/monit.d/', path_template='/templates/', path_programs='/programs', path_includes='./includes'):
     msg(__name__, 'main:main', 'Begin.', logging.info, time_start=time_start)
     msg(__name__, 'main:env', 'Begin.', logging.info, time_start=time_start)
     envs = Env()
@@ -264,6 +317,10 @@ def main(path_config='/etc/monit.d/', path_template='/templates/', path_programs
     depend = TemplateDepend(envs=envs)
 
     msg(__name__, 'main:depend', 'Success.', logging.info, time_start=time_start)
+    msg(__name__, 'main:includes', 'Begin.', logging.info, time_start=time_start)
+    get_includes(path_includes,templates=path_template,depend=depend,envs=envs)
+
+    msg(__name__, 'main:includes', 'Success.', logging.info, time_start=time_start)
     msg(__name__, 'main:generator', 'Begin.', logging.info, time_start=time_start)
 
     generate_files = generate_params(envs.get('GENERATE'), depend=depend)
@@ -282,6 +339,7 @@ if __name__ == "__main__":
     parser.add_argument('--config', default='/etc/monit.d/')
     parser.add_argument('--templates', default='/templates/')
     parser.add_argument('--programs', default='/programs')
+    parser.add_argument('--includes', default='./include')
 
     args = parser.parse_args()
-    main(args.config,args.templates,args.programs)
+    main(args.config,args.templates,args.programs,args.includes)
