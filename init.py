@@ -233,6 +233,8 @@ class Generator():
         msg(__name__, 'generator:generate_program:{}'.format(path), 'Success.', logging.info, time_start=time_start)
 
 def generate_params(env_val, depend=None):
+    if not env_val: return {}
+
     result = {}
     for val in env_val.split(sep=';'):
         result[val] = {}
