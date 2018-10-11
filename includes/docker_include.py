@@ -21,7 +21,8 @@ def get_docker_lib():
 
 def get_docker_client(docker, envs):
     try:
-        client = docker.client.DockerClient(base_url=envs.get('DOCKER_SOCKET'))
+        importlib.reload(docker)
+        client = docker.docker.client.DockerClient(base_url=envs.get('DOCKER_SOCKET'))
     except:
         print('Unable to connect to docker socket.')
         print(format_exc())
