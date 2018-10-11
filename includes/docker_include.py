@@ -31,6 +31,19 @@ def get_docker_client(docker, envs):
     return client
 
 def build_files(name, envs=None, depend=None):
+    global CONFIG, PROGRAM
+    config = 'docker_conf_{}'.format(name)
+    CONFIG.append(config)
+
+    prog = 'docker_prog_{}'.format(name)
+    PROGRAM.append(prog)
+
+    depend.config[config] = {'envs':  ['ATTEMPTS','FAILURES', 'TIMEOUT'],
+                             'parms': {'name': (depend._simple, config),
+                                       'times': (depend.env.get, 'FAILURES'),
+                                       'cycles': (depend.env.get, 'ATTEMPTS'),
+                                       'timeout': (depend.env.get, 'TIMEOUT')},
+                             'callback': (depend._callback, config)}
     print('DEBUG', name)
 
 def detect_docker_containers(envs,depend):

@@ -81,6 +81,9 @@ class TemplateDepend():
                                     'parms': {'daemon': (self.env.get, 'REPEAT')},
                                     'callback': (self._callback, 'default')}}
 
+    def _simple(self, name):
+        return name
+
     def _build_fses(self, args1):
         result = {}
         incoming = self.env.get(args1)
@@ -145,7 +148,8 @@ class Env():
                     'ADMIN_PASS': {'default': self._rpg('admin'), 'requered': False, 'value': None},
                     'USER_PASS': {'default': self._rpg('user'), 'requered': False, 'value': None},
                     'FILESYSTEMS': {'default': 'auto', 'requered': False, 'value': None},
-                    'ENV_FILE': {'default': './.env', 'requered': False, 'value': None}}
+                    'ENV_FILE': {'default': './.env', 'requered': False, 'value': None},
+                    'TIMEOUT': {'default': 120, 'requered': False, 'value': None}}
 
     prog_pattern = 'ADD_PROG_'
     conf_pattern = 'ADD_CONF_'
