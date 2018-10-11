@@ -30,12 +30,15 @@ def get_docker_client(docker, envs):
     return client
 
 def build_files(name, envs=None, depend=None):
-    pass
+    print('DEBUG', name)
 
 def detect_docker_containers(envs,depend):
     docker_lib = get_docker_lib()
     docker_client = get_docker_client(docker_lib,envs)
     if not docker_client: return docker_lib
+
+    containers = docker_client.containers.list()
+    [build_files(container.name,envs,depend) for container in containers]
 
     return docker_lib
 
