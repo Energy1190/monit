@@ -33,9 +33,15 @@ def get_docker_client(docker, envs):
 def build_files(name, envs=None, depend=None):
     global CONFIG, PROGRAM
     config = 'docker_conf_{}'.format(name)
+    path = os.path.join(SELFDIR, 'docker_conf' + '.tmpl')
+    path_new = os.path.join(SELFDIR, config + '.tmpl')
+    copyfile(path, path_new)
     CONFIG.append(config)
 
     prog = 'docker_prog_{}'.format(name)
+    path = os.path.join(SELFDIR, 'docker_prog' + '.py')
+    path_new = os.path.join(SELFDIR, prog + '.py')
+    copyfile(path, path_new)
     PROGRAM.append(prog)
 
     depend.config[config] = {'envs':  ['ATTEMPTS','FAILURES', 'TIMEOUT'],
