@@ -6,7 +6,7 @@ from traceback import format_exc
 CONFIG = []         # list names
 PROGRAM = []        # list names
 DEPEND = {}         # depend dict
-SELFDIR = os.path.join('/'.join(os.path.realpath(__file__).split('/')[:-1]), 'docker')        # path
+SELFDIR = os.path.join('/'.join(os.path.realpath(__file__).split('/')[:-1]), 'docker_files')        # path
 
 def get_docker_lib():
     try:
