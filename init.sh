@@ -10,4 +10,8 @@ do
 done
 
 python3 /app/init.py --templates /app/templates --includes /app/includes
+if [ $? != 0 ]; then
+    echo "Error on generate config. Exit."
+	exit 1
+fi
 monit -c /etc/monitrc -I -v
