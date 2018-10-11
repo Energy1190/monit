@@ -177,7 +177,10 @@ class Env():
             if self.conf_pattern in env: self.add_item('GENERATE',os.environ[env])
 
     def add_item(self, item, obj):
-        self.envs[item] += ';{}'.format(obj)
+        if self.envs[item].get('value'):
+            self.envs[item]['value'] += ';{}'.format(obj)
+        else:
+            self.envs[item]['value'] = ';{}'.format(obj)
 
     def _rpg(self, name):
         # Random password generate
@@ -270,7 +273,8 @@ def get_includes(path='./includes', templates=None, depend=None, envs=None):
         if os.path.isfile(sub_path) and sub_path.split('.')[-1] == 'py':
             try:
                 if '_include' in item:
-                    lib = importlib.import_module(item)
+                    module = item.split('.')[0]
+                    lib = importlib.import_module(module)
                     config = lib.get('config')
                     if config:
                         [envs.add_item('GENERATE', sub_item) for sub_item in config]
