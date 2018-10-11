@@ -339,7 +339,7 @@ if __name__ == "__main__":
     parser.add_argument('--config', default='/etc/monit.d/')
     parser.add_argument('--templates', default='/templates/')
     parser.add_argument('--programs', default='/programs')
-    parser.add_argument('--includes', default='./include')
+    parser.add_argument('--includes', default='./includes')
 
     args = parser.parse_args()
     main(args.config,args.templates,args.programs,args.includes)
