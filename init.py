@@ -221,14 +221,16 @@ class Generator():
 
         if self.generate_files:
             for obj in self.generate_files:
+                if not obj: continue
                 self.generate_file_from_tmpl('{}{}.conf'.format(self.target_dir, obj),
                                              '{}.tmpl'.format(obj),
                                              **self.generate_files[obj])
 
         if self.generate_progams:
             for obj in self.generate_progams:
+                if not obj: continue
                 self.generate_programs_from_tmpl('{}/{}.py'.format(self.program_dir, obj),
-                                                 '{}{}.py'.format(self.path, obj))
+                                                 '{}/{}.py'.format(self.path, obj))
 
     def _check_path(self):
         if not os.path.exists(self.target_dir):

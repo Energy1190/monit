@@ -1,7 +1,7 @@
 import os
 from shutil import copyfile
 
-CONFIG = ['test_conf.tmpl']         # list names
+CONFIG = ['test_conf']         # list names
 PROGRAM = ['test_prog.py']        # list names
 DEPEND = {}                    # depend dict
 SELFDIR = os.path.join('/'.join(os.path.realpath(__file__).split('/')[:-1]), 'test')        # path
