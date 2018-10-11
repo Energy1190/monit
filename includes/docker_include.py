@@ -21,7 +21,7 @@ def get_docker_lib():
 
 def get_docker_client(docker, envs):
     try:
-        client = docker.DockerClient(base_url=envs.get('DOCKER_SOCKET'))
+        client = docker.client.DockerClient(base_url=envs.get('DOCKER_SOCKET'))
     except:
         print('Unable to connect to docker socket.')
         print(format_exc())
@@ -41,7 +41,7 @@ def detect_docker_containers(envs,depend):
 
 def build_depend(envs, depend):
     envs.add_env('DOCKER_CONTAINERS', {'default': 'disable', 'requered': False, 'value': None})
-    envs.add_env('DOCKER_SOCKET', {'default': '/var/run/docker.sock', 'requered': False, 'value': None})
+    envs.add_env('DOCKER_SOCKET', {'default': 'unix://var/run/docker.sock', 'requered': False, 'value': None})
     if envs.get('DOCKER_CONTAINERS') == 'disable': return None
 
     docker_lib = None
