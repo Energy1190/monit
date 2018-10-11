@@ -182,6 +182,14 @@ class Env():
         else:
             self.envs[item]['value'] = ';{}'.format(obj)
 
+    def add_env(self, name, val_dict):
+        self.envs[name] = val_dict
+        for env in os.environ:
+            if env == name: self.envs[name]['value'] = os.environ[env]
+
+        if not self.envs[name]['value'] and self.envs[name]['default']:
+            self.envs[name]['value'] = self.envs[name]['default']
+
     def _rpg(self, name):
         # Random password generate
         password = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(20))
@@ -278,6 +286,8 @@ def get_includes(path='./includes', templates=None, depend=None, envs=None):
                 if '_include' in item:
                     module = item.split('.')[0]
                     lib = importlib.import_module(module)
+                    lib.build_depend(envs, depend)
+
                     config = lib.get('config')
                     if config:
                         [envs.add_item('GENERATE', sub_item) for sub_item in config]
@@ -286,7 +296,6 @@ def get_includes(path='./includes', templates=None, depend=None, envs=None):
                     if program:
                         [envs.add_item('PROGRAMS', sub_item) for sub_item in program]
 
-                    lib.build_depend(envs, depend)
                     lib.callback(templates)
                     msg(__name__, 'includes:import', 'Add. {}'.format(item), logging.info, time_start=time_start)
             except:
