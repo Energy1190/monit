@@ -2,8 +2,7 @@ FROM alpine
 
 RUN apk -U add monit python3 lm_sensors dmidecode smartmontools
 
-RUN pip3 install docker-py \
-    && pip3 install Jinja2 \
+RUN pip3 install Jinja2 \
     && pip3 install plumbum \
     && pip3 install python-etcd \
     && pip3 install requests
