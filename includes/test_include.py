@@ -17,8 +17,8 @@ def get(name):
 
 def callback(temlate_path):
     for item in CONFIG:
-        path = os.path.join(SELFDIR,item)
-        path_new = os.path.join(temlate_path,item)
+        path = os.path.join(SELFDIR,item + '.tmpl')
+        path_new = os.path.join(temlate_path,item + '.tmpl')
         if os.path.exists(path): copyfile(path,path_new)
 
     for item in PROGRAM:
