@@ -21,6 +21,6 @@ def callback(temlate_path):
         if os.path.exists(path): copyfile(path,path_new)
 
     for item in PROGRAM:
-        path = os.path.join(SELFDIR,item)
-        path_new = os.path.join(temlate_path,item)
+        path = os.path.join(SELFDIR,item + '.py')
+        path_new = os.path.join(temlate_path,item + '.py')
         if os.path.exists(path): copyfile(path,path_new)

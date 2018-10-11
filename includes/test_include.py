@@ -2,7 +2,7 @@ import os
 from shutil import copyfile
 
 CONFIG = ['test_conf']         # list names
-PROGRAM = ['test_prog.py']        # list names
+PROGRAM = ['test_prog']        # list names
 DEPEND = {}                    # depend dict
 SELFDIR = os.path.join('/'.join(os.path.realpath(__file__).split('/')[:-1]), 'test')        # path
 
@@ -22,6 +22,6 @@ def callback(temlate_path):
         if os.path.exists(path): copyfile(path,path_new)
 
     for item in PROGRAM:
-        path = os.path.join(SELFDIR,item)
-        path_new = os.path.join(temlate_path,item)
+        path = os.path.join(SELFDIR,item + '.py')
+        path_new = os.path.join(temlate_path,item + '.py')
         if os.path.exists(path): copyfile(path,path_new)

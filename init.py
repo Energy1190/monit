@@ -216,6 +216,7 @@ class Generator():
         self.target_dir = tgt
         self.program_dir = tgt2
 
+        self._check_path()
         self.generate_files = generate_dict
         self.generate_progams = progarms_dict
 
