@@ -1,6 +1,7 @@
 import os
 import importlib
 from shutil import copyfile
+from traceback import format_exc
 
 CONFIG = []         # list names
 PROGRAM = []        # list names
@@ -11,6 +12,9 @@ def get_docker_lib():
     try:
         lib = importlib.import_module('docker')
     except:
+        print('No library found. Try to install.')
+        print(format_exc())
+
         os.system('pip3 install docker')
         lib = get_docker_lib()
     return lib
@@ -20,6 +24,8 @@ def get_docker_client(docker, envs):
         client = docker.DockerClient(base_url=envs.get('DOCKER_SOCKET'))
     except:
         print('Unable to connect to docker socket.')
+        print(format_exc())
+
         return None
     return client
 
@@ -29,7 +35,7 @@ def build_files(name, envs=None, depend=None):
 def detect_docker_containers(envs,depend):
     docker_lib = get_docker_lib()
     docker_client = get_docker_client(docker_lib,envs)
-    if not docker_client: return None
+    if not docker_client: return docker_lib
 
     return docker_lib
 
