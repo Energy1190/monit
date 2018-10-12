@@ -45,12 +45,11 @@ def build_files(name, envs=None, depend=None):
     PROGRAM.append(prog)
 
     depend.config[config] = {'envs':  ['ATTEMPTS','FAILURES', 'TIMEOUT'],
-                             'parms': {'name': (depend._simple, config),
+                             'parms': {'name': (depend._simple, prog),
                                        'times': (depend.env.get, 'FAILURES'),
                                        'cycles': (depend.env.get, 'ATTEMPTS'),
                                        'timeout': (depend.env.get, 'TIMEOUT')},
                              'callback': (depend._callback, config)}
-    print('DEBUG', name)
 
 def detect_docker_containers(envs,depend):
     docker_lib = get_docker_lib()
