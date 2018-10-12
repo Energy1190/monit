@@ -1,0 +1,1 @@
+docker run -it --rm -e GENERATE="default;fs;httpd" -e DOCKER_CONTAINERS=auto -v /var/run/docker.sock:/var/run/docker.sock:ro energy1190/monit
