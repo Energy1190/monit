@@ -1,0 +1,3 @@
+check program {{ name }} path /programs/{{ name }}.py
+    with timeout {{ timeout }} seconds
+    if status != 0 for {{ times }} times within {{ cycles }} cycles then alert
