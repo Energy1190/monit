@@ -8,15 +8,22 @@ PROGRAM = []        # list names
 DEPEND = {}         # depend dict
 SELFDIR = ''        # path
 
-def get_mysql_lib():
+def get_mysql_lib(recursion=0):
     try:
         lib = importlib.import_module('pymysql')
     except:
         print('No library found. Try to install.')
         print(format_exc())
 
+        os.system('pip3 install --upgrade setuptools')
         os.system('pip3 install pymysql')
-        lib = get_mysql_lib()
+        recursion += 1
+        if recursion > 3:
+            print('No library found. Fatal.')
+            print(format_exc())
+            return None
+
+        lib = get_mysql_lib(recursion)
     return lib
 
 def get_mysql_client(mysql, envs):
