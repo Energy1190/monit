@@ -1,0 +1,29 @@
+monit:
+  image: energy1190/monit:latest
+  environment:
+    # VIRTUAL_HOST: "monit.example.com"
+    # VIRTUAL_PORT: 2812
+    # MAIL_SERVER: "mail.example.com"
+    # MAIL_USER: "username user@exampl.com"
+    # MAIL_PASSWORD: "password secret-pw"
+    # MAIL_ADDRESS "send_to_user@exampl.com"
+    # HOSTNAME: "hostname"
+    # GENERATE: "conf1;conf2;conf3"
+    # MAX_CPU: "95%"
+    # MAX_RAM: "95%"
+    # MAX_SPACE: "95%"
+    # MAX_LOAD: "4"
+    # FILESYSTEMS: "auto" | "name1|path1;name2|path2;name3:path3"
+    # DOCKER_CONTAINERS: "disable" | "auto" | "name1;name2;name3"
+    # MYSQL_CHECK: "diable" | "enable"
+    # MYSQL_HOST: "localhost" | "mysql"
+    # MYSQL_PASSWORD: "root_password"
+    # MYSQL_DATABASE: "database"
+    # MYSQL_MAXCONN: "200"
+    # MYSQL_MAXTIME: "360"
+  ports:
+    - "2812:2812"
+  volumes:
+    - "/var/run/docker.sock:/var/run/docker.sock:ro"
+  #links:
+  #  - "mysql:mysql"
