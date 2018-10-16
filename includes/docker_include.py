@@ -48,6 +48,7 @@ def build_files(name, envs=None, depend=None):
                              'parms': {'name': (depend._simple, prog),
                                        'times': (depend.env.get, 'FAILURES'),
                                        'cycles': (depend.env.get, 'ATTEMPTS'),
+                                       'slack': (depend.env.get, 'SLACK_URL'),
                                        'timeout': (depend.env.get, 'TIMEOUT')},
                              'callback': (depend._callback, config)}
 

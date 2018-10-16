@@ -1,3 +1,4 @@
 check program sensors with path /usr/bin/sensors
     with timeout 500 seconds
     if status != 0 for {{ times }} times within {{ cycles }} cycles then alert
+	{% if slack %}if status != 0 for {{ times }} times within {{ cycles }} cycles then exec "/bin/bash -c 'SEND_URL={{ slack }} SEND_NAME=TEMP DESCRIPTION="The temperature is too high." /app/send_to_slack.sh'"{% endif %}

@@ -22,7 +22,8 @@ VOLUME /etc/monit.gen
 
 EXPOSE 2812
 
-RUN chmod +x /app/init.sh
+RUN chmod +x /app/init.sh \
+    && chmod +x /app/send_to_slack.sh
 
 CMD ["/app/init.sh"]
 

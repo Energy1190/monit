@@ -2,3 +2,6 @@ check system {{ name }}
     if cpu usage (user) > {{ cpu }} for {{ cycles }} cycles then alert
     if loadavg (15min) > {{ load }}  then alert
     if memory usage > {{ ram }} for {{ cycles }} cycles then alert
+	{% if slack %}if cpu usage (user) > {{ cpu }} for {{ cycles }} cycles then exec "/bin/bash -c 'SEND_URL={{ slack }} SEND_NAME=CPU DESCRIPTION="CPU is overloaded. Load more than {{ cpu }}." /app/send_to_slack.sh'"{% endif %}
+	{% if slack %}if loadavg (15min) > {{ load }}  then  exec "/bin/bash -c 'SEND_URL={{ slack }} SEND_NAME=LOADAVG DESCRIPTION="Average load is too high. Load more than {{ load }}." /app/send_to_slack.sh'"{% endif %}
+	{% if slack %}if memory usage > {{ ram }} for {{ cycles }} cycles then exec "/bin/bash -c 'SEND_URL={{ slack }} SEND_NAME=MEMORY DESCRIPTION="RAM is overloaded. Load more than {{ ram }}." /app/send_to_slack.sh'"{% endif %}

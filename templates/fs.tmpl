@@ -1,4 +1,5 @@
 {% for fs in fses %}
 check filesystem {{ fs }} with path {{ fses[fs] }}
    if space usage > {{ hdd }} for {{ times }} times within {{ cycles }} cycles then alert
+   {% if slack %}if space usage > {{ hdd }} for {{ times }} times within {{ cycles }} cycles then exec "/bin/bash -c 'SEND_URL={{ slack }} SEND_NAME={{ fs }} DESCRIPTION="File system overflow. More than {{ hdd }} taken" /app/send_to_slack.sh'"{% endif %}
 {% endfor %} 

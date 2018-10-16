@@ -52,6 +52,7 @@ class TemplateDepend():
                                              'mail': (self._build_alert, 'MAIL_ADDRESS'),
                                              'server': (self.env.get, 'MAIL_SERVER'),
                                              'port': (self.env.get, 'MAIL_PORT'),
+                                             'slack': (self.env.get, 'SLACK_URL'),
                                              'auth': (self._build_auth, 'MAIL_USER','MAIL_PASSWORD')},
                                    'callback': (self._callback, 'mailsend')},
                        'host':    {'envs':  ['HOSTNAME', 'ATTEMPTS', 'MAX_CPU', 'MAX_RAM', 'MAX_LOAD'],
@@ -59,10 +60,12 @@ class TemplateDepend():
                                              'cpu': (self.env.get, 'MAX_CPU'),
                                              'ram': (self.env.get, 'MAX_RAM'),
                                              'load': (self.env.get, 'MAX_LOAD'),
+                                             'slack': (self.env.get, 'SLACK_URL'),
                                              'cycles': (self.env.get, 'ATTEMPTS')},
                                    'callback': (self._callback, 'host')},
                        'temp':    {'envs':  ['ATTEMPTS','FAILURES'],
                                    'parms': {'times': (self.env.get, 'FAILURES'),
+                                             'slack': (self.env.get, 'SLACK_URL'),
                                              'cycles': (self.env.get, 'ATTEMPTS')},
                                    'callback': (self._callback, 'temp')},
                        'httpd':   {'envs':  ['SERVER_PORT','ALLOW_NETWORK', 'ADMIN_PASS', 'USER_PASS'],
@@ -75,6 +78,7 @@ class TemplateDepend():
                                    'parms': {'fses': (self._build_fses, 'FILESYSTEMS'),
                                              'hdd': (self.env.get, 'MAX_SPACE'),
                                              'times': (self.env.get, 'FAILURES'),
+                                             'slack': (self.env.get, 'SLACK_URL'),
                                              'cycles': (self.env.get, 'ATTEMPTS')},
                                    'callback': (self._callback, 'fs')},
                        'default':  {'envs':  ['REPEAT'],
@@ -149,7 +153,8 @@ class Env():
                     'USER_PASS': {'default': self._rpg('user'), 'requered': False, 'value': None},
                     'FILESYSTEMS': {'default': 'auto', 'requered': False, 'value': None},
                     'ENV_FILE': {'default': './.env', 'requered': False, 'value': None},
-                    'TIMEOUT': {'default': 120, 'requered': False, 'value': None}}
+                    'TIMEOUT': {'default': 120, 'requered': False, 'value': None},
+                    'SLACK_URL': {'default': None, 'requered': False, 'value': None}}
 
     prog_pattern = 'ADD_PROG_'
     conf_pattern = 'ADD_CONF_'
