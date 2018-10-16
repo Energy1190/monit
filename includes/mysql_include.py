@@ -57,7 +57,7 @@ def build_depend(envs, depend):
         mysql_client.close()
 
     global CONFIG, PROGRAM
-    config = 'mysql_conf'
+    config = 'mysql_conf_{}_{}'.format(str(envs.get('MYSQL_MAXCONN')), str(envs.get('MYSQL_MAXTIME')))
     path = os.path.join(SELFDIR, 'mysql_conf' + '.tmpl')
     path_new = os.path.join(SELFDIR, config + '.tmpl')
     copyfile(path, path_new)
