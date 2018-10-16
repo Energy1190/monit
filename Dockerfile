@@ -1,6 +1,6 @@
 FROM alpine
 
-RUN apk -U add monit python3 lm_sensors dmidecode smartmontools pkgconfig python3-dev python-dev openssl-dev libffi-dev musl-dev make gcc
+RUN apk -U add curl monit python3 lm_sensors dmidecode smartmontools pkgconfig python3-dev python-dev openssl-dev libffi-dev musl-dev make gcc
 
 RUN pip3 install Jinja2 \
     && pip3 install plumbum \
