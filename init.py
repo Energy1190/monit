@@ -310,7 +310,7 @@ def get_includes(path='./includes', templates=None, depend=None, envs=None):
                     msg(__name__, 'includes:import', 'Add. {}'.format(item), logging.info, time_start=time_start)
             except:
                 msg(__name__, 'includes:import', 'Fail. {}'.format(item), logging.error, time_start=time_start)
-                msg(__name__, 'includes:import', 'Traceback {}'.format(str(format_exc())), logging.error, time_start=time_start)
+                msg(__name__, 'includes:import', 'Traceback: {}'.format(str(format_exc())), logging.error, time_start=time_start)
 
 def generate_params(env_val, depend=None):
     if not env_val: return {}
