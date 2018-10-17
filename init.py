@@ -84,28 +84,10 @@ class TemplateDepend():
                                    'callback': (self._callback, 'fs')},
                        'default':  {'envs':  ['REPEAT'],
                                     'parms': {'daemon': (self.env.get, 'REPEAT')},
-                                    'callback': (self._callback, 'default')},
-                       'sites':    {'envs':  ['ATTEMPTS','FAILURES','SITES'],
-                                    'parms': {'times': (self.env.get, 'FAILURES'),
-                                              'slack': (self.env.get, 'SLACK_URL'),
-                                              'cycles': (self.env.get, 'ATTEMPTS'),
-                                              'sites': (self._build_sites, 'SITES')},
-                                    'callback': (self._callback, 'sites')}}
+                                    'callback': (self._callback, 'default')}}
 
     def _simple(self, name):
         return name
-
-    def _build_sites(self, args1):
-        result = {}
-        incoming = self.env.get(args1)
-        try:
-            result = { raw.split('://')[1].split(':')[0]: {'protocol': raw.split('://')[0], 'port': (len(raw.split('://')[1].split(':')) > 1 and raw.split('://')[1].split(':')[1] or 80)}
-                       for raw in incoming.split(';')}
-        except:
-            msg(__name__, 'depend:build:sites', 'Fail. Invalid incoming value.', logging.error,
-                time_start=time_start)
-            sys.exit(1)
-        return result
 
     def _build_fses(self, args1):
         result = {}
@@ -173,8 +155,7 @@ class Env():
                     'FILESYSTEMS': {'default': 'auto', 'requered': False, 'value': None},
                     'ENV_FILE': {'default': './.env', 'requered': False, 'value': None},
                     'TIMEOUT': {'default': 120, 'requered': False, 'value': None},
-                    'SLACK_URL': {'default': None, 'requered': False, 'value': None},
-                    'SITES': {'default': None, 'requered': False, 'value': None}}
+                    'SLACK_URL': {'default': None, 'requered': False, 'value': None}}
 
     prog_pattern = 'ADD_PROG_'
     conf_pattern = 'ADD_CONF_'
