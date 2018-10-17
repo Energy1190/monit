@@ -1,4 +1,6 @@
 check program {{ name }} path /programs/{{ name }}.py
     with timeout {{ timeout }} seconds
     if status != 0 for {{ times }} times within {{ cycles }} cycles then alert
-    {% if slack %}if status != 0 for {{ times }} times within {{ cycles }} cycles then exec "/bin/bash -c 'SEND_URL={{ slack }} SEND_NAME={{ name }} DESCRIPTION="Found problems with the database." /app/send_to_slack.sh'"{% endif %}
+    {% if slack %}if status == 1 for {{ times }} times within {{ cycles }} cycles then exec "/bin/bash -c 'SEND_URL={{ slack }} SEND_NAME={{ name }} DESCRIPTION="Found problems with the database." /app/send_to_slack.sh'"{% endif %}
+	{% if slack %}if status == 2 for {{ times }} times within {{ cycles }} cycles then exec "/bin/bash -c 'SEND_URL={{ slack }} SEND_NAME={{ name }} DESCRIPTION="Too many database connections." /app/send_to_slack.sh'"{% endif %}
+	{% if slack %}if status == 3 for {{ times }} times within {{ cycles }} cycles then exec "/bin/bash -c 'SEND_URL={{ slack }} SEND_NAME={{ name }} DESCRIPTION="The database receives very long query." /app/send_to_slack.sh'"{% endif %}
