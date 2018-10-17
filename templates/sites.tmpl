@@ -1,0 +1,11 @@
+{% for site in sites %}
+check host {{ site }} with address {{ site }}
+    if failed 
+        port {{ sites[site]['port'] }}
+        protocol {{ sites[site]['protocol'] }}
+    for {{ times }} times within {{ cycles }} cycles then alert
+    {% if slack %}if failed
+        port {{ sites[site]['port'] }}
+        protocol {{ sites[site]['protocol'] }}
+    for {{ times }} times within {{ cycles }} cycles then alert "/bin/bash -c 'SEND_URL={{ slack }} SEND_NAME={{ site }} DESCRIPTION="The remote host - {{ site }} stopped responding on port {{ sites[site]['port'] }}." /app/send_to_slack.sh'"{% endif %}
+{% endfor %}
