@@ -25,6 +25,12 @@ class MyApp(cli.Application):
         password = os.environ.get('MYSQL_PASSWORD')
         database = os.environ.get('MYSQL_DATABASE')
 
+        longtime_users = os.environ.get('MYSQL_LONGTIME_USERS')
+        if longtime_users:
+            longtime_users = longtime_users.split(';')
+        else:
+            longtime_users = ['root']
+
         if not all([hostname,username,password,database]):
             print('Failed to get variables.')
             sys.exit(1)
@@ -36,13 +42,13 @@ class MyApp(cli.Application):
 
         if len(data) > int(max_connection):
             print('Too many database connections: {}'.format(str(len(data))))
-            sys.exit(1)
+            sys.exit(2)
 
-        timewaits = [(item[5],item[7]) for item in data if int(item[5]) > int(max_timewait)]
+        timewaits = [(item[5],item[7]) for item in data if int(item[5]) > int(max_timewait) and item[1] not in longtime_users]
         if len(timewaits):
             print('The database receives very long querys.')
             [ print(item) for item in timewaits]
-            sys.exit(1)
+            sys.exit(3)
 
         sys.exit(0)
 
